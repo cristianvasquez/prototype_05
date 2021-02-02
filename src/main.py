@@ -4,7 +4,7 @@ from functools import partial
 
 import frontmatter
 import networkx as nx
-import matplotlib.pyplot as plt
+from yaml.scanner import ScannerError
 
 from misc import build_inverted_index, get_title, get_links
 from misc import label_to_path
@@ -27,6 +27,12 @@ def main(
     G = nx.DiGraph()
     page_ref = {}
 
+    def get_set_id(value):
+        if value not in page_ref:
+            page_ref[value] = len(page_ref) + 1
+        return page_ref[value]
+
+    number_of_files=0
     # Generating the graph
     for root, dirs, files in os.walk(input_dir, topdown=True):
         dirs[:] = [d for d in dirs if d not in exclude]
@@ -37,19 +43,14 @@ def main(
             with codecs.open(source_file, 'r', encoding='utf-8') as f:
 
                 name, extension = os.path.splitext(file_name)
-                if extension == '.md':
 
-                    try:
-                        fm = frontmatter.load(f)
-                    except:
-                        print("{}".format(source_file))
-
+                def add_node(fm):
                     content = fm.content
                     metadata = fm.metadata
 
                     unique_name = os.path.relpath(source_file, start=input_dir)
-                    _id = id(unique_name)
-                    page_ref[_id]=unique_name
+                    _id = get_set_id(unique_name)
+                    page_ref[_id] = unique_name
 
                     node = {
                         'id': _id,
@@ -60,25 +61,45 @@ def main(
                         # 'links': links
                     }
 
+                    # Add nodes
                     G.add_nodes_from([
                         (_id, node),
                     ])
 
-                    # links = set()
+                    # Add edges
                     for label in get_links(content):
                         link = get_path(label)
                         if link is not None:
-                            G.add_edge(_id, id(link))
-                            # links.add(id(link))
+                            G.add_edge(_id, get_set_id(link))
 
-    # with open(target_filename, 'w', encoding="utf-8") as out_file:
-    #     out_file.write(template.render(context))
+
+
+                if extension == '.md':
+                    try:
+                        fm = frontmatter.load(f)
+                        add_node(fm)
+                        number_of_files += 1
+                    except ScannerError:
+                        print("Warning: could not process front-matter of: {}".format(source_file))
+
+
+    print(nx.info(G))
+
+    print('Loaded',number_of_files,'files')
+
     # nx.draw(G, with_labels=True)
     # plt.show()
-    # print(G.nodes)
     pr = nx.pagerank(G, alpha=0.8)
-    winner_page_rank = max(pr)
-    print(page_ref[winner_page_rank])
+    source_file = nx.get_node_attributes(G, "source_file")
+
+    sorted_page_rank = sorted(pr.items(), key=lambda x: x[1], reverse=True)
+    print('Generated',len(sorted_page_rank),'nodes')
+
+    for k, v in sorted_page_rank[1:50]:
+
+        # Some nodes will not be in this list, this means they don't have a note yet
+        if k in source_file:
+            print(v, k, page_ref[k])
 
 if __name__ == '__main__':
     main()
