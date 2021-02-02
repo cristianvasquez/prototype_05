@@ -13,9 +13,8 @@ THIS_DIR = os.getcwd()
 
 
 def main(
-        # input_dir='/home/cvasquez/obsidian/workspace',
-        # input_dir='/home/cvasquez/obsidian/workspace',
-        input_dir='../test_obsidian_vault',
+        input_dir='/home/cvasquez/obsidian/workspace',
+        # input_dir='../test_obsidian_vault',
 ):
     input_dir = os.path.abspath(os.path.join(THIS_DIR, input_dir))
 
@@ -26,6 +25,7 @@ def main(
 
     # A directed graph
     G = nx.DiGraph()
+    page_ref = {}
 
     # Generating the graph
     for root, dirs, files in os.walk(input_dir, topdown=True):
@@ -47,7 +47,9 @@ def main(
                     content = fm.content
                     metadata = fm.metadata
 
-                    _id = id(os.path.relpath(source_file, start=input_dir))
+                    unique_name = os.path.relpath(source_file, start=input_dir)
+                    _id = id(unique_name)
+                    page_ref[_id]=unique_name
 
                     node = {
                         'id': _id,
@@ -71,10 +73,12 @@ def main(
 
     # with open(target_filename, 'w', encoding="utf-8") as out_file:
     #     out_file.write(template.render(context))
-    nx.draw(G, with_labels=True)
-    plt.show()
-    print(G.nodes)
-
+    # nx.draw(G, with_labels=True)
+    # plt.show()
+    # print(G.nodes)
+    pr = nx.pagerank(G, alpha=0.8)
+    winner_page_rank = max(pr)
+    print(page_ref[winner_page_rank])
 
 if __name__ == '__main__':
     main()
