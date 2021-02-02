@@ -1,0 +1,99 @@
+{
+  "main": {
+    "id": "3da2e734d5c61f1e",
+    "type": "split",
+    "children": [
+      {
+        "id": "3492e20990c4492a",
+        "type": "leaf",
+        "active": true,
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "Index.md",
+            "mode": "source"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "eaabc5acc1aef454",
+    "type": "split",
+    "children": [
+      {
+        "id": "a9c2aae621c05d35",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "cdfb0709fab964ce",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "03280c89b3f9a462",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "253c362485cacbbc",
+    "type": "split",
+    "children": [
+      {
+        "id": "7d971d1d9c055a88",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e3f96820d25ecfcf",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Index.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "lastOpenFiles": [
+    "Untitled.md",
+    "Directory A/Directory B/Bob.md",
+    "Carlos.md",
+    "The test vault.md",
+    "Directory A/Directory B/Untitled.md",
+    "Directory A/🦐/Ana.md",
+    "Directory A/Directory B/Ana.md",
+    "Directory A/Directory B/Another Ana.md",
+    "Directory A/🦐/Untitled.md"
+  ]
+}
