@@ -1,8 +1,6 @@
 import codecs
 import os
-import shutil
 from functools import partial
-from shutil import copyfile
 
 import frontmatter
 
@@ -10,6 +8,7 @@ from misc import build_inverted_index, get_title, get_links
 from misc import label_to_path
 
 THIS_DIR = os.getcwd()
+
 
 def main(
         # input_dir='/home/cvasquez/obsidian/public-garden',
@@ -30,24 +29,28 @@ def main(
             source_file = os.path.join(root, file_name)
             name, _ = os.path.splitext(file_name)
             with codecs.open(source_file, 'r', encoding='utf-8') as f:
-                fm = frontmatter.load(f)
-                content = fm.content
-                metadata = fm.metadata
 
-                links = []
-                for label in get_links(content):
-                    link = get_path(label)
-                    if link is not None:
-                        links.append(link)
+                name, extension = os.path.splitext(file_name)
+                if extension == '.md':
 
-                node = {
-                    'title': get_title(metadata, content, source_file),
-                    'source_file': source_file,
-                    'metadata': metadata,
-                    'content': content,
-                    'links': links
-                }
-                print(node)
+                    fm = frontmatter.load(f)
+                    content = fm.content
+                    metadata = fm.metadata
+
+                    links = []
+                    for label in get_links(content):
+                        link = get_path(label)
+                        if link is not None:
+                            links.append(link)
+
+                    node = {
+                        'title': get_title(metadata, content, source_file),
+                        'source_file': source_file,
+                        'metadata': metadata,
+                        'content': content,
+                        'links': links
+                    }
+                    print(node)
     # with open(target_filename, 'w', encoding="utf-8") as out_file:
     #     out_file.write(template.render(context))
 
