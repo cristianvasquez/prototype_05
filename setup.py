@@ -21,9 +21,9 @@ setup(
         ]
     },
     install_requires=[
-        'markdown',
-        'markdown-checklist',
-        'pyembed-markdown',
+        'networkx',
         'python-frontmatter',
+        'scipy',
+        'matplotlib'
     ]
 )

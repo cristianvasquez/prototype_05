@@ -3,7 +3,8 @@ import re
 
 from bs4 import BeautifulSoup
 
-def build_inverted_index(input_dir,exclude):
+
+def build_inverted_index(input_dir, exclude):
     names_relpath = {}
     for current_dir, dirs, files in os.walk(input_dir, topdown=True):
         dirs[:] = [d for d in dirs if d not in exclude]
@@ -14,8 +15,8 @@ def build_inverted_index(input_dir,exclude):
             names_relpath[file].append(relative_path)
     return names_relpath
 
-def label_to_path(inverted_index,label):
 
+def label_to_path(inverted_index, label):
     # If the label contains a pipe '|', then it has an alias.
     tokens = label.split(sep='|', maxsplit=1)
     assert (len(tokens) in {1, 2})
@@ -33,11 +34,15 @@ def label_to_path(inverted_index,label):
     elif dir == '':
         # Lookup the path
         paths = inverted_index[file]
-        assert (len(paths) == 1)
-        result = os.path.join(paths[0], name)
+        if (len(paths) != 1):
+            raise Exception('Inconsistency', paths, label)
+
+        # assert (len(paths) == 1)
+        path = '' if paths[0] == '.' else paths[0]
+        result = os.path.join(path, filename)
     else:
         # Has already the path
-        result = name
+        result = filename
     return result
 
 
@@ -47,7 +52,7 @@ def get_links(contents):
     return pattern.findall(contents)
 
 
-def get_title(metadata,content,source_file):
+def get_title(metadata, content, source_file):
     if 'title' in metadata:
         title = metadata['title']
     else:
@@ -58,4 +63,3 @@ def get_title(metadata,content,source_file):
         else:
             _, title = os.path.split(source_file)
     return title
-
