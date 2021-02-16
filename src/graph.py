@@ -70,7 +70,7 @@ def build_graph(input_dir):
                     try:
                         fm = frontmatter.load(f)
                         add_node(fm)
-                    except ScannerError:
+                    except:
                         print("Warning: could not process front-matter of: {}".format(source_file))
 
     return G, page_ref
@@ -106,7 +106,7 @@ def label_to_path(inverted_index, label):
         # Lookup the path
         paths = inverted_index[file]
         if (len(paths) != 1):
-            raise Exception('Inconsistency', paths, label)
+            raise Exception('There are ambiguous paths',label,paths)
 
         # assert (len(paths) == 1)
         path = '' if paths[0] == '.' else paths[0]

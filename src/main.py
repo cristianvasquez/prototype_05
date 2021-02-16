@@ -8,6 +8,7 @@ THIS_DIR = os.getcwd()
 
 DEFAULT_DIR = '/home/cvasquez/obsidian/workspace'
 
+
 def main(
         input_dir=DEFAULT_DIR,
         # input_dir='../test_obsidian_vault',
@@ -32,7 +33,11 @@ def main(
     pr = nx.pagerank(G, alpha=0.8)
     print_node_list(pr, 10)
 
-
+    def printDiameter():
+        components = nx.connected_components(G)
+        largest_component = max(components, key=len)
+        diameter = nx.diameter(largest_component)
+        print(diameter)
 
 
 if __name__ == '__main__':
