@@ -1,0 +1,5 @@
+networkx~=2.5.1
+python-louvain~=0.15
+python-frontmatter~=1.0.0
+bs4~=0.0.1
+beautifulsoup4~=4.9.3

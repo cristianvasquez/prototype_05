@@ -1,8 +1,8 @@
 import plotly.graph_objects as go
-from networkx import random_layout, spring_layout, spiral_layout, spectral_layout
+from networkx import spring_layout
 
-from src.graph import build_graph
-from src.main import DEFAULT_DIR
+from lib.obsidian_graph import build_graph
+from playground.vars import DEFAULT_DIR
 
 # Based on <a href='https://plotly.com/ipython-notebooks/network-graphs/'> https://plotly.com/ipython-notebooks/network-graphs/</a>
 

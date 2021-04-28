@@ -1,25 +1,24 @@
 import codecs
 import os
 import re
+import sys
 from functools import partial
 
 import frontmatter
 import networkx as nx
 from bs4 import BeautifulSoup
-from yaml.scanner import ScannerError
 
 THIS_DIR = os.getcwd()
 
-def build_graph(input_dir):
-    input_dir = os.path.abspath(os.path.join(THIS_DIR, input_dir))
+def build_graph(input_dir, directed=True):
+    # input_dir = os.path.abspath(os.path.join(THIS_DIR, input_dir))
+    G = nx.DiGraph() if directed else nx.Graph()
 
     # Inverted index, used to handle Obsidian's 'shortest path' strategy
     exclude = {'.git', '.obsidian', '.trash'}
     names_relpath = build_inverted_index(input_dir, exclude)
     get_path = partial(label_to_path, names_relpath)
 
-    # A directed graph
-    G = nx.DiGraph()
     page_ref = {}
 
     def get_set_id(value):
@@ -70,10 +69,15 @@ def build_graph(input_dir):
                     try:
                         fm = frontmatter.load(f)
                         add_node(fm)
+                    except AttributeError as err:
+                        print("AttributeError error: {0}".format(err))
+                        print("while processing front-matter of: {}".format(source_file))
                     except:
-                        print("Warning: could not process front-matter of: {}".format(source_file))
+                        print("Unexpected error:", sys.exc_info()[0])
+                        print("while processing front-matter of: {}".format(source_file))
 
     return G, page_ref
+
 
 def build_inverted_index(input_dir, exclude):
     names_relpath = {}
@@ -106,7 +110,7 @@ def label_to_path(inverted_index, label):
         # Lookup the path
         paths = inverted_index[file]
         if (len(paths) != 1):
-            raise Exception('There are ambiguous paths',label,paths)
+            raise Exception('There are ambiguous paths', label, paths)
 
         # assert (len(paths) == 1)
         path = '' if paths[0] == '.' else paths[0]

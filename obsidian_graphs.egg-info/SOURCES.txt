@@ -1,8 +1,0 @@
-README.md
-setup.py
-obsidian_graphs.egg-info/PKG-INFO
-obsidian_graphs.egg-info/SOURCES.txt
-obsidian_graphs.egg-info/dependency_links.txt
-obsidian_graphs.egg-info/entry_points.txt
-obsidian_graphs.egg-info/requires.txt
-obsidian_graphs.egg-info/top_level.txt

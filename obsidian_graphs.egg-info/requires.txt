@@ -1,4 +1,0 @@
-markdown
-markdown-checklist
-pyembed-markdown
-python-frontmatter
